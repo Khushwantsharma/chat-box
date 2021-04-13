@@ -12,7 +12,8 @@
     "react-scripts": "4.0.2",
     "web-vitals": "^1.1.0"
   },
-  "homepage": "https://khushwant-hg/github.io/chat-box",
+  "homepage": "https://khushwant-hg.github.io/chat-box",
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
