@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/github.io/chat-box/static/css/main.0103a237.chunk.css",
+    "main.js": "/github.io/chat-box/static/js/main.3d0a1f0f.chunk.js",
+    "main.js.map": "/github.io/chat-box/static/js/main.3d0a1f0f.chunk.js.map",
+    "runtime-main.js": "/github.io/chat-box/static/js/runtime-main.c9e14b30.js",
+    "runtime-main.js.map": "/github.io/chat-box/static/js/runtime-main.c9e14b30.js.map",
+    "static/js/2.b826405e.chunk.js": "/github.io/chat-box/static/js/2.b826405e.chunk.js",
+    "static/js/2.b826405e.chunk.js.map": "/github.io/chat-box/static/js/2.b826405e.chunk.js.map",
+    "static/js/3.5af16dca.chunk.js": "/github.io/chat-box/static/js/3.5af16dca.chunk.js",
+    "static/js/3.5af16dca.chunk.js.map": "/github.io/chat-box/static/js/3.5af16dca.chunk.js.map",
+    "index.html": "/github.io/chat-box/index.html",
+    "static/css/main.0103a237.chunk.css.map": "/github.io/chat-box/static/css/main.0103a237.chunk.css.map",
+    "static/js/2.b826405e.chunk.js.LICENSE.txt": "/github.io/chat-box/static/js/2.b826405e.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/github.io/chat-box/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c9e14b30.js",
+    "static/js/2.b826405e.chunk.js",
+    "static/css/main.0103a237.chunk.css",
+    "static/js/main.3d0a1f0f.chunk.js"
+  ]
+}
