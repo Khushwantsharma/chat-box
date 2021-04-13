@@ -1,0 +1,104 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+}
+.title{
+  text-decoration: underline;
+  font-size: larger;
+}
+
+.Main--box{
+  display: flex;
+  height: 80vh;
+  width: 90vw;
+  margin:auto auto;
+  margin-top: 7vh;
+  border-radius: 5px;
+  background-color: whitesmoke;
+}
+/* Userslist styling */
+.Main--box--users{
+  background-color: tomato;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  width: 30vw;
+}
+.Main--box--users--list{
+  padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  overflow-y: scroll;
+}
+.username{
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+  word-break: break-all;
+  background-color: lemonchiffon;
+  border-radius: 2px;
+  margin: 1px;
+}
+
+
+/*for the box content of message area*/
+.Main--box--chat{
+  background-color: turquoise;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  width: 60vw;
+}
+.Main--box--chat--messagearea{
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  /* background-color: whitesmoke; */
+  overflow-y: scroll;
+}
+/* for Message body*/
+.Message--main{
+  align-self: flex-end;
+  text-align: end;
+}
+.Message--oth{
+  align-self: flex-start;
+}
+.Message--main--content{
+  word-break: break-all;
+  text-align:start;
+  display: inline-block;
+  font-size: larger;
+}
+.Message--main--time{
+  display: inline-block;
+  font-size: small;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+} */
