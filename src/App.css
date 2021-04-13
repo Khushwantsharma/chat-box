@@ -17,6 +17,14 @@
   border-radius: 5px;
   background-color: whitesmoke;
 }
+.Username--main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+}
 /* Userslist styling */
 .Main--box--users{
   background-color: tomato;

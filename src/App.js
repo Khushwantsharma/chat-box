@@ -1,18 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  // if(true){
-  //   return(
-  //     <div className="App">
-  //     <form className="username-area" onSubmit={userNameDone}>
-  //                           <label for="em" >UserName(Email):</label> 
-  //                           <input className="text--area" type="email" id="em" onChange={userNameupdate} name="mes" required/>
-  //                           <button  classes="button--height text--bold">Enter</button>
-  //     </form>  
-  //   </div>
-  // );
-  // }
+const App=()=>{
+  
+  const userNameDone=()=>{}
+  const userNameSetter=()=>{}
+  if(true){
+    return (
+      <div className="Username--main">
+        <form className="Username--form" onSubmit={userNameDone}>
+          <label for="em" >UserName(Email):</label>
+          <input className="text--area" type="email" id="em" onChange={userNameSetter} name="mes" required />
+          <button classes="button--height text--bold">Enter</button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
