@@ -65,6 +65,7 @@
 }
 /* for Message body*/
 .Message--main{
+  max-width: 90%;
   align-self: flex-end;
   text-align: end;
 }

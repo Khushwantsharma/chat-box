@@ -1,11 +1,34 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import soc from './socket';
 
 const App=()=>{
-  
-  const userNameDone=()=>{}
-  const userNameSetter=()=>{}
-  if(true){
+  soc.connect();
+  const [username,setUsername]=useState({name:"",isSet:false});
+  useEffect(()=>{
+    soc.onAny((event, ...args) => {
+      console.log(event, args);
+    });
+    soc.on("connect_error",(err)=>{
+      if(err==="already exist"){
+        setUsername({name:"",isSet:false});
+        alert("already exist");
+      }
+    })
+  }
+    ,[]);
+  const userNameDone=(e)=>{
+    console.log("[userNameDone]: Called");
+    e.preventDefault();
+    setUsername({name:username.name,isSet:true});
+    soc.auth = {'username': username.name };
+    soc.connect();
+  }
+  const userNameSetter=(e)=>{
+    setUsername({name:e.target.value,isSet:false});
+  }
+
+  if(!username.isSet){
     return (
       <div className="Username--main">
         <form className="Username--form" onSubmit={userNameDone}>
@@ -30,23 +53,6 @@ const App=()=>{
             <div className="username">UserLdsdssssasadddddddddist</div>
             UserList<br />
             UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            UserList<br />
-            
-            as
           </div>
         </div>
         <div className="Main--box--chat">
