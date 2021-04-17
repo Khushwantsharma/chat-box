@@ -46,14 +46,15 @@ const App=()=>{
           k=[]
         }
         else{k=prevState.slice();}
-        k.push({name:dat.name,message:[],online:dat.online})
+        k.push({name:dat.name,message:[],online:dat.online});
+        return k;
       });
       setList(prevState=>{
         let k=prevState.slice();
             k.push(<div key={dat.name} onClick={activeusersetter.bind(this,dat.name)} className={dat.online?"username--active":"username"}>{dat.name}</div>);
         return k;
-    })
-    })
+    });
+    });
 
     //for online /offline
     soc.on('offline',(dat)=>{
@@ -84,21 +85,21 @@ const App=()=>{
     })
 
     //recevice user message.
-    // soc.on('private-message',(dat,from)=>{
-    //   setUsers(prevState=>{
-    //     let k=prevState.slice();
-    //     let i;
-    //     for(let y=0;y<k.length;y++){
-    //       if(from==k[y].name){
-    //         i=y;
-    //       }
-    //     }
-    //     let p=k[i].message;
-    //     p.push({mes:dat,ismine:false});
-    //     k[i].message=p;
-    //     return k;
-    //   })
-    // })
+    soc.on('private-message',(dat,from)=>{
+      setUsers(prevState=>{
+        let k=prevState.slice();
+        let i;
+        for(let y=0;y<k.length;y++){
+          if(from==k[y].name){
+            i=y;
+          }
+        }
+        let p=k[i].message;
+        p.push({mes:dat,ismine:false});
+        k[i].message=p;
+        return k;
+      });
+    });
 
     // soc.on("connect_error",(err)=>{
     //   console.log("err:",err);
