@@ -42,8 +42,16 @@
 .username{
   /* overflow: hidden; */
   /* text-overflow: ellipsis; */
+  cursor: pointer;
   word-break: break-all;
   background-color: lemonchiffon;
+  border-radius: 2px;
+  margin: 1px;
+}
+.username--active{
+  cursor: pointer;
+  background-color: lightgreen;
+  word-break: break-all;
   border-radius: 2px;
   margin: 1px;
 }
