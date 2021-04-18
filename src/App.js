@@ -16,7 +16,12 @@ const App=()=>{
     soc.onAny((event, ...args) => {
       console.log(event, args);
     });
+    soc.on("connect_error",(er)=>{
+      console.log("err:",er);
+      setUsername({name:"",isSet:false});
+    });
     soc.on('users',(data)=>{
+    // setUsername(prevState=>return({name:prevState.name,isSet:true}));
       if(data.length==0){
       }else{
         setUsers((prevState)=>{
