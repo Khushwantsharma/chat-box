@@ -92,6 +92,61 @@
 
 }
 
+/* for create group user*/
+.group--main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+}
+.group--main-box{
+  position: relative;
+  background-color:skyblue;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 300;
+  height: 70vh;
+  width: 80%;
+}
+/* .groupname-form{
+  position: absolute;
+  top: 0;
+  right:0;
+} */
+.group--main-box--divider{
+  display: flex;
+  justify-content: center;
+  background-color: lime;
+  height: 80%;
+  width: 95%;
+  margin:auto auto;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+.group--default--list{
+  height: 100%;
+  width: 50%;
+  background-color: linen;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.group--selected--list{
+  height: 100%;
+  width: 50%;
+  background-color: navajowhite;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.group--users--list{
+  padding-top: 5%;
+  display: flex;
+  word-break: break-all;
+  flex-direction: column;
+  height: 80%;
+  overflow-y: scroll;
+}
 
 
 

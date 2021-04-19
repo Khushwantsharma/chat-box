@@ -4,6 +4,7 @@ import UserList from './UserList';
 import soc from './socket';
 
 const App=()=>{
+  const [creategroup,setcreategroup]=useState(false);
   const lastmessageref=useRef();
   const [list,setList]=useState([]);
   const [Activeuser,setActiveuser]=useState({name:"",index:-1,isSet:false});
@@ -173,12 +174,18 @@ const App=()=>{
       return k;
     })
   }
+  // //Functions to create group:
+  const creategroup_signal=(e)=>{
+    e.preventDefault();
+    setcreategroup(true);
+  }
+  
 
   if(!username.isSet){
     return (
       <div className="Username--main">
         <form className="Username--form" onSubmit={userNameDone}>
-          <label for="em" >UserName(Email):</label>
+          <label htmlFor="em" >UserName(Email):</label>
           <input className="text--area" type="email" id="em" onChange={userNameSetter} name="mes" required />
           <button classes="button--height text--bold">Enter</button>
         </form>
@@ -198,6 +205,9 @@ const App=()=>{
       )
     })
   }
+  if(creategroup){
+      return (<UserList user={users} g={setcreategroup} soc={soc}/>)
+  }
   return (
     <div className="App">
       <div className="title">
@@ -206,8 +216,13 @@ const App=()=>{
       <div className="Main--box">
         <div className="Main--box--users">
           <div className="title">Users</div>
+          
+          {/* <div> New Group </div> */}
           {/* {list?<UserList user={users}/>:<div>not found</div>} */}
-          {list}
+          <div className="Main--box--users--list"> 
+            {list}
+          </div>
+          <div className="username" onClick={creategroup_signal}>New group+</div>
         </div>
         <div className="Main--box--chat">
           <div className="title">
