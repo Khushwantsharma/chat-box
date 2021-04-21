@@ -248,6 +248,7 @@ const App=()=>{
                           <input className="text--area" type="text" id="mes" name="mes" required/>
                           <button classes="button--height text--bold">Enter</button>
           </form>
+          
           </div>
           :null}
           

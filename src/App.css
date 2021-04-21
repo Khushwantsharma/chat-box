@@ -7,7 +7,10 @@
   text-decoration: underline;
   font-size: larger;
 }
-
+.title__mid{
+  text-decoration: underline;
+  font-size: medium;
+}
 .Main--box{
   display: flex;
   height: 80vh;
@@ -115,6 +118,18 @@
   top: 0;
   right:0;
 } */
+.cancel{
+  width: 100%;
+  text-decoration-line: underline;
+  font-weight: 300;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: medium;
+  background: linear-gradient(to right,pink,rgb(192, 49, 104));
+}
+.scroll--list{
+  overflow-y: scroll;
+}
 .group--main-box--divider{
   display: flex;
   justify-content: center;
@@ -146,6 +161,13 @@
   flex-direction: column;
   height: 80%;
   overflow-y: scroll;
+}
+.grouplistname{
+  cursor: pointer;
+  word-break: break-all;
+  background: linear-gradient(to right,pink,skyblue,lightgreen);
+  border-radius: 4px;
+  margin: 1px;
 }
 
 
