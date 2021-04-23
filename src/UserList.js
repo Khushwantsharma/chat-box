@@ -49,7 +49,9 @@ const UserList=({user,g,soc})=>{
     }
     const try1=(e)=>{
       e.preventDefault();
-      console.log("called");
+      let gp_name=e.target.group_name.value;
+      console.log("called",gp_name);
+      soc.emit('new-group-list',gp_name,groupuserlist);
       g(false);
     }
     const cancelGroup=(e)=>{

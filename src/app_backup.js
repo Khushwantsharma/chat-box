@@ -2,18 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import UserList from './UserList';
 import soc from './socket';
-import { Socket } from 'socket.io-client';
 
 const App=()=>{
-  const [creategroup,setcreategroup]=useState(false);
+  const [creategroup,setcreategroup]=usestate(false);
   const lastmessageref=useRef();
   const [list,setList]=useState([]);
-  const [Activeuser,setActiveuser]=useState({name:"",index:-1,isGroup:false,isSet:false});
+  const [Activeuser,setActiveuser]=useState({name:"",index:-1,isSet:false});
   const [au,setau]=useState("");
   const [username,setUsername]=useState({name:"",isSet:false});
-  //syntax[name:,message:[],online:,isGroup:]    
+  //syntax[name:,message:[],online:]
   //syntax message:{mes:mes,ismine:true}
-  //syntax g-message:{mes:mes,ismine:true,owner:""}
   const [users,setUsers]=useState([]);
   useEffect(()=>{
     soc.onAny((event, ...args) => {
@@ -30,7 +28,7 @@ const App=()=>{
         setUsers((prevState)=>{
           let k=prevState.slice();
           data.forEach(dat => {
-            k.push({name:dat.name,message:[],online:dat.online,isGroup:false})
+            k.push({name:dat.name,message:[],online:dat.online})
           });
           console.log(k);
           return k;
@@ -54,7 +52,7 @@ const App=()=>{
           k=[]
         }
         else{k=prevState.slice();}
-        k.push({name:dat.name,message:[],online:dat.online,isGroup:false});
+        k.push({name:dat.name,message:[],online:dat.online});
         return k;
       });
       setList(prevState=>{
@@ -108,50 +106,6 @@ const App=()=>{
         return k;
       });
     });
-    soc.on("error",(er)=>{
-      alert(er);
-    })
-    soc.on('new-group-req',a=>{
-      // console.log("new user request",a);
-      soc.emit('new-group',a);
-    });
-    soc.on('room-joined',dat=>{
-      console.log("room joined");
-      //under progress
-      setUsers((prevState)=>{
-        let k;
-        console.log("prevstate:",prevState);
-        if(!prevState){
-          // console.log("PrevStatE:",prevState);
-          k=[];
-        }
-        else{k=prevState.slice();}
-        k.push({name:dat,message:[],online:false,isGroup:true});
-        return k;
-      });
-      setList(prevState=>{
-        let k=prevState.slice();
-            k.push(<div key={dat} onClick={activeusersetter.bind(this,dat)} className="group--user">{dat}</div>);
-        return k;
-    });
-    });
-    //To get message for group
-    soc.on('group-message',(dat,group,sender)=>{
-      setUsers(prevState=>{
-        let k=prevState.slice();
-        let i;
-        for(let y=0;y<k.length;y++){
-          if(group==k[y].name){
-            i=y;
-          }
-        }
-        let p=k[i].message;
-        p.push({mes:dat,ismine:false,owner:sender});
-        k[i].message=p;
-        return k;
-      });
-    });
-
 
     // soc.on("connect_error",(err)=>{
     //   console.log("err:",err);
@@ -175,18 +129,10 @@ const App=()=>{
         k.isSet=true;
         for(let i=0;i<users.length;i++){
           if(au==users[i].name){
-            if(users[i].isGroup){
-              k.isGroup=true;
-              k.index=i;
-              break;
-            }else{
-              k.index=i;
-              k.isGroup=false;
-              break;
-            }
+            k.index=i;
+            break;
           }
         }}
-        console.log("k:",k);
         return k;
       })
     }
@@ -218,42 +164,22 @@ const App=()=>{
   const mesSend=(e)=>{
     e.preventDefault();
     let mes=e.target.mes.value;
-    console.log(mes,Activeuser.isGroup);
-    if(Activeuser.isGroup){
-      soc.emit('group-message',mes,Activeuser.name);
-      console.log("username@@@:",username.name);
-      setUsers(prevState=>{
-        let k=prevState.slice();
-        let p=k[Activeuser.index].message.slice();
-        p.push({mes:mes,ismine:true,owner:""});
-        k[Activeuser.index].message=p;
-        return k;
-      });
-
-    }else{
-      soc.emit('private-message',mes,Activeuser.name);
-      setUsers(prevState=>{
-        let k=prevState.slice();
-        let p=k[Activeuser.index].message.slice();
-        p.push({mes:mes,ismine:true});
-        k[Activeuser.index].message=p;
-        return k;
-      });
-    }
-    
+    console.log(mes);
+    soc.emit('private-message',mes,Activeuser.name);
+    setUsers(prevState=>{
+      let k=prevState.slice();
+      let p=k[Activeuser.index].message.slice();
+      p.push({mes:mes,ismine:true});
+      k[Activeuser.index].message=p;
+      return k;
+    })
   }
-  // //Functions to create group:
-  const creategroup_signal=(e)=>{
-    e.preventDefault();
-    setcreategroup(true);
-  }
-  
 
   if(!username.isSet){
     return (
       <div className="Username--main">
         <form className="Username--form" onSubmit={userNameDone}>
-          <label htmlFor="em" >UserName(Email):</label>
+          <label for="em" >UserName(Email):</label>
           <input className="text--area" type="email" id="em" onChange={userNameSetter} name="mes" required />
           <button classes="button--height text--bold">Enter</button>
         </form>
@@ -262,52 +188,28 @@ const App=()=>{
   }
   let meslist;
   if(Activeuser.isSet&&users){
-    if(Activeuser.isGroup){
-      meslist=users[Activeuser.index].message.map((dat,index)=>{
-        let last= (index==(users[Activeuser.index].message.length-1))
-        return(
-          <div ref={last?lastmessageref:null} className={dat.ismine?"GMessage--main": "GMessage--oth"}>
-                    {dat.ismine?null:(<div className="flex--active">
-          <div className="GMessage--main--author">{dat.owner}</div>
-          </div>)}
-                    <div className="Message--main--content">
-                        {dat.mes}</div>
-                    <div className="Message--main--time">12:00 pm</div>
-              </div>
-        )
-      })
-    }else{
-      meslist=users[Activeuser.index].message.map((dat,index)=>{
-        let last= (index==(users[Activeuser.index].message.length-1))
-        return(
-          <div ref={last?lastmessageref:null} className={dat.ismine?"Message--main": "Message--oth"}>
-                    <div className="Message--main--content">
-                        {dat.mes}</div>
-                    <div className="Message--main--time">12:00 pm</div>
-              </div>
-        )
-      })
-    }
-     
-  }
-  if(creategroup){
-      return (<UserList user={users} g={setcreategroup} soc={soc}/>)
+     meslist=users[Activeuser.index].message.map((dat,index)=>{
+      let last= (index==(users[Activeuser.index].message.length-1))
+      return(
+        <div ref={last?lastmessageref:null} className={dat.ismine?"Message--main": "Message--oth"}>
+                  <div className="Message--main--content">
+                      {dat.mes}</div>
+                  <div className="Message--main--time">12:00 pm</div>
+            </div>
+      )
+    })
   }
   return (
     <div className="App">
       <div className="title">
-        Chat-System{"("+username.name+")"}
+        Chat-System
       </div>
       <div className="Main--box">
         <div className="Main--box--users">
           <div className="title">Users</div>
-          
           {/* <div> New Group </div> */}
           {/* {list?<UserList user={users}/>:<div>not found</div>} */}
-          <div className="Main--box--users--list"> 
-            {list}
-          </div>
-          <div className="username" onClick={creategroup_signal}>New group+</div>
+          {list}
         </div>
         <div className="Main--box--chat">
           <div className="title">
@@ -320,27 +222,12 @@ const App=()=>{
                       START TALKING</div>
                   <div className="Message--main--time">12:00 am</div>
             </div>}
-          
-          {/*<div  className="GMessage--main GMessage--oth">
-          <div className="flex--active">
-          <div className="GMessage--main--author">Sam</div>
-          </div>
-          <div className="GMessage--main--content">
-                    START TALKING</div>
-                <div className="GMessage--main--time">12:00 am</div>
-          </div>
-          <div  className="Message--main">
-          <div className="Message--main--content">
-                    START TALKING</div>
-                <div className="Message--main--time">12:00 am</div>
-          </div>
 
-              <div  className="Message--main Message--oth">
+             {/* <div  className="Message--main Message--oth">
                    <div className="Message--main--content">
                        Talking</div>
                    <div className="Message--main--time">12:00 pm</div>
             </div> */}
-          
           </div>
           {Activeuser.isSet?
           <div className="c">
@@ -348,7 +235,6 @@ const App=()=>{
                           <input className="text--area" type="text" id="mes" name="mes" required/>
                           <button classes="button--height text--bold">Enter</button>
           </form>
-          
           </div>
           :null}
           

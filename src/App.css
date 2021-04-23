@@ -92,6 +92,36 @@
 .Message--main--time{
   display: inline-block;
   font-size: small;
+}
+
+/* Group message css*/
+.GMessage--main{
+  max-width: 90%;
+  /* display: flex; */
+  align-self: flex-end;
+  text-align: end;
+}
+.GMessage--oth{
+  align-self: flex-start;
+}
+.GMessage--main--content{
+  word-break: break-all;
+  text-align:start;
+  display: inline-block;
+  font-size: larger;
+}
+.GMessage--main--time{
+  display: inline-block;
+  align-self: flex-end;
+  font-size: small;
+}
+.flex--active{
+  display: flex;
+}
+.GMessage--main--author{
+  /* justify-self: flex-start; */
+  align-self: flex-start;
+  font-size: small;
 
 }
 
@@ -169,7 +199,13 @@
   border-radius: 4px;
   margin: 1px;
 }
-
+.group--user{
+  cursor: pointer;
+  background-color: lightgray;
+  word-break: break-all;
+  border-radius: 2px;
+  margin: 1px;
+}
 
 
 
