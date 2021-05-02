@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import UserList from './UserList';
+import Profile from './Component/Profile';
 import soc from './socket';
 import { Socket } from 'socket.io-client';
 
+
 const App=()=>{
+  const [Profileinfo,setProfileinfo]=useState(false);
   const [creategroup,setcreategroup]=useState(false);
   const lastmessageref=useRef();
   const [list,setList]=useState([]);
@@ -248,6 +251,11 @@ const App=()=>{
     setcreategroup(true);
   }
   
+  // //Functions to Open Profile component:
+  const ProfileInfoSignal=(e)=>{
+    e.preventDefault();
+    setProfileinfo(true);
+  }
 
   if(!username.isSet){
     return (
@@ -290,6 +298,9 @@ const App=()=>{
     }
      
   }
+  if(Profileinfo){
+    return(<Profile flag={setProfileinfo}/>)
+  }
   if(creategroup){
       return (<UserList user={users} g={setcreategroup} soc={soc}/>)
   }
@@ -311,8 +322,15 @@ const App=()=>{
         </div>
         <div className="Main--box--chat">
           <div className="title">
-            Chat Messages {Activeuser.isSet?Activeuser.name:null}
+            Chat Messages {Activeuser.isSet?<span className="Active--Username--display" onClick={ProfileInfoSignal}>{Activeuser.name}</span>:null}
           </div>
+          {/* {Activeuser.isGroup?(
+            <div className="flex--active flex--center">
+              <div onClick={}>Add</div>
+              <div onClick={}>Remove</div>
+              <div onClick={}>Delete</div>
+            </div>
+          ):null} */}
           <div className="Main--box--chat--messagearea">
           {Activeuser.isSet?meslist:
           <div  className="Message--main ">
