@@ -14,7 +14,8 @@ const App=()=>{
   const [Activeuser,setActiveuser]=useState({name:"",index:-1,isGroup:false,isSet:false});
   const [au,setau]=useState("");
   const [username,setUsername]=useState({name:"",isSet:false});
-  //syntax[name:,message:[],online:,isGroup:]    
+  //syntax[name:,message:[],online:,isGroup:]
+  //syntax[name:,message:[],online:,isGroup:,groupMember:]    
   //syntax message:{mes:mes,ismine:true}
   //syntax g-message:{mes:mes,ismine:true,owner:""}
   const [users,setUsers]=useState([]);
@@ -35,7 +36,7 @@ const App=()=>{
           data.forEach(dat => {
             k.push({name:dat.name,message:[],online:dat.online,isGroup:false})
           });
-          console.log(k);
+          // console.log(k);
           return k;
         });
         setList(prevState=>{
@@ -51,7 +52,7 @@ const App=()=>{
     soc.on('new-user',dat=>{
       setUsers((prevState)=>{
         let k;
-        console.log("prevstate:",prevState);
+        // console.log("prevstate:",prevState);
         if(!prevState){
           // console.log("PrevStatE:",prevState);
           k=[]
@@ -74,11 +75,23 @@ const App=()=>{
         for(let i=0;i<k.length;i++){
           if(k[i].key==dat){
             k[i]=(<div key={dat} onClick={activeusersetter.bind(this,dat)} className="username">{dat}</div>)
-            console.log(k[i]);
+            // console.log(k[i]);
           }
         }
         return k;
-      })
+      });
+      setUsers(prevState=>{
+        let k=prevState.slice();
+        let i;
+        for(let y=0;y<k.length;y++){
+          if(dat==k[y].name){
+            i=y;
+          }
+        }
+        k[i].online=false;
+        k[i].message=[];
+        return k;
+      });
     })
 
     //for online
@@ -88,11 +101,24 @@ const App=()=>{
         for(let i=0;i<k.length;i++){
           if(k[i].key==dat){
             k[i]=(<div key={dat} onClick={activeusersetter.bind(this,dat)} className="username--active">{dat}</div>)
-            console.log(k[i]);
+            // console.log(k[i]);
           }
         }
         return k;
-      })
+      });
+      setUsers(prevState=>{
+        let k=prevState.slice();
+        let i;
+        for(let y=0;y<k.length;y++){
+          if(dat==k[y].name){
+            i=y;
+          }
+        }
+        k[i].online=true;
+        return k;
+      });
+
+
     })
 
     //recevice user message.
@@ -114,22 +140,23 @@ const App=()=>{
     soc.on("error",(er)=>{
       alert(er);
     })
-    soc.on('new-group-req',a=>{
+    soc.on('new-group-req',(a,list)=>{
+      // console.log("check:",list);
       // console.log("new user request",a);
-      soc.emit('new-group',a);
+      soc.emit('new-group',a,list);
     });
-    soc.on('room-joined',dat=>{
-      console.log("room joined");
+    soc.on('room-joined',(dat,list)=>{
+      // console.log("room joined:",list);
       //under progress
       setUsers((prevState)=>{
         let k;
-        console.log("prevstate:",prevState);
+        // console.log("prevstate:",prevState);
         if(!prevState){
           // console.log("PrevStatE:",prevState);
           k=[];
         }
         else{k=prevState.slice();}
-        k.push({name:dat,message:[],online:false,isGroup:true});
+        k.push({name:dat,message:[],online:false,isGroup:true,groupMember:list});
         return k;
       });
       setList(prevState=>{
@@ -154,6 +181,76 @@ const App=()=>{
         return k;
       });
     });
+    soc.on('group-user-added',(name,list)=>{
+      
+      setUsers(prevState=>{
+        let flag=-1;
+        let k=prevState.slice();
+        flag=k.findIndex(e=>e.name==name);
+        let j=k[flag].groupMember.slice();
+        j.push(...list);
+        k[flag].groupMember=j;
+        return k;
+      });
+    });
+
+    soc.on('user-left',(name,list)=>{
+      setUsers(prevState=>{
+        let k=prevState.slice();
+        for(let i=0;i<k.length;i++){
+          if(k[i].name==name){
+            k[i].groupMember=list;
+            break;
+          }
+        }
+        return k;
+      })
+    });
+
+    soc.on('remove-from-group-req',(name)=>{
+      soc.emit('leave-group',name);
+      setActiveuser({name:"",index:-1,isGroup:false,isSet:false});
+      setUsers(prevState=>{
+        let k=prevState.slice();
+        for(let i=0;i<k.length;i++){
+          if(k[i].name==name){
+            
+            k.splice(i,1);
+            console.log(`found :k${k} &i:${i}`);
+            break;
+          }
+        }
+        return k;
+      });
+      setList(prevState=>{
+        
+          let k=prevState.slice();
+          for(let i=0;i<k.length;i++){
+            if(k[i].key==name){
+              k.splice(i,1);
+              // console.log(k[i]);
+            }
+          }
+          return k;
+      })
+    });
+    soc.on('group-exit',(gname,dat)=>{
+      setUsers(prevState=>{
+        let k=prevState.slice();
+          for(let i=0;i<k.length;i++){
+            if(k[i].name==gname){
+              for(let j=0;j<k[i].groupMember.length;j++){
+                if(k[i].groupMember[j]==dat){
+                  k[i].groupMember.splice(j,1);
+                  j--;
+                }
+              }
+              break;
+            }
+          }
+          return k;
+      })
+    })
 
 
     // soc.on("connect_error",(err)=>{
@@ -189,7 +286,7 @@ const App=()=>{
             }
           }
         }}
-        console.log("k:",k);
+        // console.log("k:",k);
         return k;
       })
     }
@@ -201,7 +298,7 @@ const App=()=>{
   },[lastmessageref.current]);
 //  make connecntion with server.
   const userNameDone=(e)=>{
-    console.log("[userNameDone]: Called");
+    // console.log("[userNameDone]: Called");
     e.preventDefault(); 
     setUsername({name:username.name,isSet:true});
     soc.auth = {'username': username.name };
@@ -215,16 +312,16 @@ const App=()=>{
 
   //active user setter .
   const activeusersetter=(dat)=>{
-    console.log("[Activeusersetter]",dat);
+    // console.log("[Activeusersetter]",dat);
     setau(dat);  
   }
   const mesSend=(e)=>{
     e.preventDefault();
     let mes=e.target.mes.value;
-    console.log(mes,Activeuser.isGroup);
+    // console.log(mes,Activeuser.isGroup);
     if(Activeuser.isGroup){
       soc.emit('group-message',mes,Activeuser.name);
-      console.log("username@@@:",username.name);
+      // console.log("username@@@:",username.name);
       setUsers(prevState=>{
         let k=prevState.slice();
         let p=k[Activeuser.index].message.slice();
@@ -299,10 +396,11 @@ const App=()=>{
      
   }
   if(Profileinfo){
-    return(<Profile flag={setProfileinfo}/>)
+    // console.log("Active user:",Activeuser);
+    return(<Profile isgroup={Activeuser.isGroup} name={Activeuser.name} flag={setProfileinfo} uname={username.name} user={users} index={Activeuser.index} soc={soc}/>)
   }
   if(creategroup){
-      return (<UserList user={users} g={setcreategroup} soc={soc}/>)
+      return (<UserList user={users} g={setcreategroup} soc={soc} index={Activeuser.index}/>)
   }
   return (
     <div className="App">

@@ -12,8 +12,11 @@ const UserList=({user,g,soc})=>{
             let k=prevState.slice();
             // if(k.length==0){
             user.map(dat=>{
-              k.push(<div key={dat.name} onClick={addToGroup.bind(this,dat.name)} className={"grouplistname"}>{dat.name}</div>);
-            });
+              if((!dat.isGroup)&&(dat.online)){
+              // if((!dat.isGroup)){
+                k.push(<div key={dat.name} onClick={addToGroup.bind(this,dat.name)} className={"grouplistname"}>{dat.name}</div>);
+              }
+              });
           console.log("user k:",k);
           return k;
         })
