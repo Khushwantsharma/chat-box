@@ -1,1 +1,1 @@
-This is a Basic chat application using Reacht and nodejs .
+This is a Web Implementation for Chat application for browser . Node and react are used for implementation .
